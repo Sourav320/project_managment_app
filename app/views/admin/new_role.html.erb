@@ -1,0 +1,21 @@
+
+<div class="change-padding" style="margin-top:30px">
+    <div class="row">
+        <div class="col-md-9 bg-white right-part">
+            <h3 style="margin-top: 30px;">Create Role</h3>
+            <%= form_for :role, url: admin_create_role_path, html: { class: 'login-form' } do |f| %>
+               <div class="row">
+                  <div class="col-md-4">
+                      <b><%= f.label :name, "Name of role" %></b><br>
+                     <%= f.text_field :name, class: 'form-control', placeholder: 'Enter Role Name', require: "require" %>
+                    </div>
+                </div>
+                <%= f.submit "Create",  class: 'form-submit' %>
+            <% end %>
+        </div>
+    </div>
+</div>
+
+
+
+

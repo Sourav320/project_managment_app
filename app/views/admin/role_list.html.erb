@@ -1,0 +1,27 @@
+<div class="change-padding" style="margin-top:30px">
+    <div class="row">
+        <div class="col-md-9 bg-white right-part">
+            <h3>All Roles</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% count = 0 %>
+                    <% @roles.each do |role| %>
+                       <% if role.present? %>
+                            <tr>
+                                <td scope="row"><%= count += 1 %></td>
+                                <td><%= role.name %></td>
+                            </tr>
+                        <% end %>
+                    <% end %>
+                </tbody>
+            </table>
+            <%# <%= pagy_nav(@pagy).html_safe %>
+        </div>
+    </div>
+</div>

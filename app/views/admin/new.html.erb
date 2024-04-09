@@ -1,0 +1,58 @@
+<div class="change-padding" style="margin-top:30px">
+    <div class="row">
+        <div class="col-md-9 bg-white right-part">
+            <h3>Create A Project</h3>
+            <% flash.each do |type, msg| %>
+                <% if type == 'success' %>
+                    <div class="alert alert-success"><%= msg %></div>
+                <% elsif type == 'error' %>
+                    <div class="alert alert-danger"><%= msg %></div>
+                <% else %>
+                    <div class="alert alert-info"><%= msg %></div>
+                <% end %>
+            <% end %>
+            <%= form_for :project, url: admin_create_path, html: { class: 'login-form', id: 'project-form' } do |f| %>
+                <%= f.text_field :title, class: 'form-control', placeholder: 'Enter Project Title' %>
+                    <% if @project != nil and @project.errors.any? and @project.errors.to_h[:title].to_s != "" %>
+                        <div class="alert alert-danger"><%= "Title " + @project.errors.to_h[:title].to_s %></div>
+                    <% end %>
+                <%= f.text_area :description, class: 'form-control', placeholder: 'Enter Project Description' %>
+                    <% if @project != nil and @project.errors.any? and @project.errors.to_h[:description].to_s != "" %>
+                        <div class="alert alert-danger"><%= "Description " + @project.errors.to_h[:description].to_s %></div>
+                    <% end %>
+                <div class="row">
+                    <div class="col-md-3">
+                      <b><%= f.label "Select User To Add" %></b><br>
+                        <%= f.select :user_id,["Select"]+User.all.map { |user| [user.fullname, user.id] },  {}, {class: 'form-control', :style => "width: 300px;margin-bottom: 30px"} %>
+                    </div>
+                    <div class="col-md-3">
+                        <b><%= f.label "Select Role To Add" %></b><br>
+                        <%= f.select :role_id,["Select"]+Role.where.not(name: "Super Admin").map { |user| [user.name, user.id] },  {}, {class: 'form-control', :style => "width: 300px;margin-bottom: 30px"} %>
+                    </div>
+                </div>
+                <%= f.submit "Submit Project",  class: 'form-submit', id: 'submit-btn'%>
+            <% end %>
+             </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('project-form');
+        const submitBtn = document.getElementById('submit-btn');
+
+        form.addEventListener('submit', function(event) {
+            const selectUser = form.querySelector('select[name="project[user_id]"]');
+            if (selectUser.value === "Select") {
+                event.preventDefault();
+                alert('Please select at least one user.');
+            }
+            const selectRole = form.querySelector('select[name="project[role_id]"]');
+            if (selectRole.value === "Select") {
+            event.preventDefault();
+            alert('Please select a role.');
+        }
+        });
+    });
+</script>

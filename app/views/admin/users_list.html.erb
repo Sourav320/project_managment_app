@@ -1,0 +1,52 @@
+<div class="change-padding" style="margin-top:30px">
+    <div class="row">
+        <div class="col-md-9 bg-white right-part"> 
+            <h3>List of Users with access to <%= @project.title %></h3>
+            <%= link_to "Add More Users", admin_add_user_project_path(projectid: @project.projectid), :class => 'btn btn-sm btn-primary'  %>
+            <% flash.each do |type, msg| %>
+                <% if type == 'success' %>
+                    <div class="alert alert-success"><%= msg %></div>
+                <% elsif type == 'error' %>
+                    <div class="alert alert-danger"><%= msg %></div>
+                <% else %>
+                    <div class="alert alert-info"><%= msg %></div>
+                <% end %>
+            <% end %>
+            <br>
+            <table class="table">
+                <thead>
+                    <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">User</th>
+                    <th scope="col">Read</th>
+                    <th scope="col">Write</th>
+                    <th scope="col">Update</th>
+                    <th scope="col">Delete</th>
+                    <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% count = 0 %>
+                    <% if @project != nil %>
+                    <% @project_user.each do |user_id| %>
+                        <% project_user = ProjectUser.find_by(project_id: @project.id, user_id: user_id) %>
+                    <tr>
+                    <th scope="row"><%= count += 1 %></th>
+                    <td><%= User.find(project_user.user_id).fullname %></td>
+                    <td><%= project_user.read_access ? "Yes" : "No" %></td>
+                    <td><%= project_user.write_access ? "Yes" : "No" %></td>
+                    <td><%= project_user.update_access ? "Yes" : "No" %></td>
+                    <td><%= project_user.delete_access ? "Yes" : "No" %></td>
+                    <td>
+                        <%= link_to "Update User", admin_edit_user_path(project_user.user.id) , :class => 'btn btn-sm btn-secondary' %>
+                        <%= link_to "Delete User", admin_delete_user_project_path(user_id: project_user.user_id), :class => 'btn btn-sm btn-danger', onclick: "return confirm('Are you sure you want to delete user?');" %>
+                    </td>
+                    </tr>
+                    <% end %>
+                    <% end %>
+                </tbody>
+            </table>
+            <%# pagy_nav(@pagy).html_safe %>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,64 @@
+<div class="change-padding" style="margin-top:30px">
+    <div class="row">
+        <div class="col-md-9 bg-white right-part">
+            <h3>Your Tasks</h3>
+            <%= link_to "Add Tasks", admin_add_new_task_path(projectid: @project.projectid), :class => 'btn btn-primary'  %>
+            <% flash.each do |type, msg| %>
+                <% if type == 'success' %>
+                    <div class="alert alert-success"><%= msg %></div>
+                <% elsif type == 'error' %>
+                    <div class="alert alert-danger"><%= msg %></div>
+                <% else %>
+                    <div class="alert alert-info"><%= msg %></div>
+                <% end %>
+            <% end %>
+            <div class="row">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Assigned To</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Action</th>
+                            <th scope="col">Created At</th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <% count = 0 %>
+                    <% @project.tasks.order(created_at: :desc).each do |task| %>
+                        <tr>
+                            <th scope="row"><%= count += 1 %></th>
+                            <td><%= task.title %></td>
+                            <td><%= task.description %></td>
+                            <td><%= task.user.fullname %></td>
+                            <td>  
+                                <%= task.select :task_status, options_for_select( task.task_status), {}, { class: "form-control" } %> 
+                            </td>
+                            <td>
+                                
+                                <%= link_to admin_view_task_details_path(id: task.id), :class => 'btn btn-sm btn-secondary all-center', "data-toggle" => "tooltip", "data-placement" => "top", "title" => "Edit Thread Details"  do %>
+                                <i class="fa fa-eye"></i>
+                                <% end %>
+                                <%# <%= link_to admin_delete_task_path(id: task.id), :class => 'btn btn-sm btn-danger all-center', "data-toggle" => "tooltip", "data-placement" => "top", "title" => "Delete Thread"  do %> 
+                                <%# <i class="fa fa-trash"></i> %>
+                                <%= link_to "Delete User", admin_delete_task_path(id: task.id), :class => 'btn btn-sm btn-danger', onclick: "return confirm('Are you sure you want to delete user?');" %>
+
+                                <%# <% end %>
+                               
+                            </td>
+                            <td>
+                                <%= task.created_at.to_date.strftime("%d-%m-%Y") %>
+                            </td>
+                        </tr>
+                    <% end %>
+                    </tbody>
+                </table>
+                <%# pagy_nav(@pagy).html_safe %>
+            </div>
+        </div>
+    </div>
+</div>

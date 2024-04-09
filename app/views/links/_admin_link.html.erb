@@ -1,0 +1,35 @@
+
+<div class="col-md-3" style="margin-top: 38px;">
+      <div class="list-group">
+        <%= link_to "Dashboard", dashboard_admin_index_path, :class => "list-group-item list-group-item-action active" %>
+        <div class="dropdown">
+          <button class="list-group-item list-group-item-action dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Project
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="<%= admin_show_project_page_path %>">List Of Project</a>
+            <a class="dropdown-item" href="<%= admin_new_path %>">Create Project</a>
+          </div>
+        </div>
+        <%= link_to "Users", users_admin_index_path, :class => "list-group-item list-group-item-action" %>
+        <%= link_to "Logout", logout_admin_index_path, :class => "list-group-item list-group-item-action" %>
+      </div>
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var dropdownButton = document.getElementById("dropdownMenuButton");
+        var dropdownMenu = document.querySelector(".dropdown-menu");
+
+        dropdownButton.addEventListener("click", function() {
+            dropdownMenu.classList.toggle("show");
+        });
+
+        dropdownMenu.addEventListener("click", function(event) {
+            if (event.target.classList.contains("dropdown-item")) {
+                var selectedOption = event.target.getAttribute("href");
+                window.location.href = selectedOption;
+            }
+        });
+    });
+</script>
